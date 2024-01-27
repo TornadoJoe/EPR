@@ -1,0 +1,23 @@
+ def predict(self, X_test):
+        """
+        Implementieren Sie diese Funktion. Die Funktion soll auf die bestehenden Cluster zugreifen und jeden neuen Datenpunkt einem dieser 
+        Cluster zuteilen. 
+        Die Funktion soll außerdem den Mittelpunkt des zugeteilten Clusters ausgeben (drucken). 
+        X_test (numpy array): Datenpunkte auf denen der Algorithmus getestet werden soll. Shape: (n_test_samples, n_features)
+        return: liste oder numpy array welche die Clusterzugehörigkeit pro Datenpunkt enthält.
+        """
+        ## Ihr Code hier
+        test = len(X_test)
+        
+        # Aufspannen eines Vektors pro Cluster-Mittelpunkt mit den Dimensionen (n_test_samples x 1)
+        distance = np.zeros((test, self.K))
+        
+        # Separate Berechnung der Entfernung aller Testdatenpunkte von jedem Cluster-Mittelpunkt
+        for k in range(self.K):
+            # Berechnung der quadrierten euklidischen Distanz von jedem Testdatenpunkt zum Mittelpunkt
+            distance[:, k] = np.sum((X_test - self.mu[k]) ** 2, axis=1)
+        
+        # Optimierungsschritt (welcher Punkt ist von welchem Mittelpunkt am wenigsten entfernt?)
+        minima_index = np.argmin(distance, axis=1)
+        
+        return minima_index
